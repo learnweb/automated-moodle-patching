@@ -17,7 +17,7 @@ git diff --quiet --exit-code
 if [ "$?" -eq "1" ];then
   patchpath="root";
   patchpath="${patchdir}/${patchpath}.patch";
-  git diff --ignore-submodules=all > "$patchpath"
+  git diff --ignore-submodules=dirty > "$patchpath"
   echo "Created Patch for project root"
 fi
 
@@ -26,7 +26,7 @@ if [ \"\$?\" -eq \"1\" ];then
   relpath=\$(realpath --relative-to=\"$projectroot\" \"\$PWD\");
   patchpath=\"\${relpath//\\//\\~}\";
   patchpath=\"${patchdir}/\${patchpath}.patch\";
-  git diff --ignore-submodules=all > \"\$patchpath\"
+  git diff --ignore-submodules=dirty > \"\$patchpath\"
   echo \"Created Patch for \${relpath}\"
 fi"
 
