@@ -15,7 +15,7 @@ patchdir="$(realpath "$patchdir")"
 
 patchpath="${patchdir}/root.patch";
 if [ -a "$patchpath" ]; then
-  git apply "$patchpath"
+  git apply --index "$patchpath"
   git submodule update --init
 fi
 
@@ -24,7 +24,7 @@ relpath=\$(realpath --relative-to=\"$projectroot\" \"\$PWD\");
 patchpath=\"\${relpath//\\//\\~}\";
 patchpath=\"${patchdir}/\${patchpath}.patch\";
 if [ -a \"\$patchpath\" ]; then
-  git apply \"\$patchpath\"
+  git apply --index \"\$patchpath\"
   git submodule update --init
 fi"
 
