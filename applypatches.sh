@@ -21,8 +21,8 @@ fi
 
 submodulecode="
 relpath=\$(realpath --relative-to=\"$projectroot\" \"\$PWD\");
-patchpath=\"\${relpath//\\//\\~}\";
-patchpath=\"${patchdir}/\${patchpath}.patch\";
+patchpath=\"\${relpath//\\//\\.}\";
+patchpath=\"${patchdir}/submodule-\${patchpath}.patch\";
 if [ -a \"\$patchpath\" ]; then
   git apply --index \"\$patchpath\"
   git submodule update --init

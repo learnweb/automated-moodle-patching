@@ -13,19 +13,18 @@ fi
 
 patchdir="$(realpath "$patchdir")"
 
-git diff --quiet --exit-code
+git diff --quiet --exit-code --ignore-submodules=dirty
 if [ "$?" -eq "1" ];then
-  patchpath="root";
-  patchpath="${patchdir}/${patchpath}.patch";
+  patchpath="${patchdir}/root.patch";
   git diff --ignore-submodules=dirty > "$patchpath"
   echo "Created Patch for project root"
 fi
 
-submodulecode="git diff --quiet --exit-code
+submodulecode="git diff --ignore-submodules=dirty --quiet --exit-code
 if [ \"\$?\" -eq \"1\" ];then
   relpath=\$(realpath --relative-to=\"$projectroot\" \"\$PWD\");
-  patchpath=\"\${relpath//\\//\\~}\";
-  patchpath=\"${patchdir}/\${patchpath}.patch\";
+  patchpath=\"\${relpath//\\//\\.}\";
+  patchpath=\"${patchdir}/submodule-\${patchpath}.patch\";
   git diff --ignore-submodules=dirty > \"\$patchpath\"
   echo \"Created Patch for \${relpath}\"
 fi"
