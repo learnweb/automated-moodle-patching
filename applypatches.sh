@@ -11,10 +11,13 @@ if [ ! -d "$patchdir" ]; then
   echo "The patch folder does not exist."
 fi
 
+# Make patchdir an absolute path
 patchdir="$(realpath "$patchdir")"
 
 patchpath="${patchdir}/root.patch";
+# If the patch-file does exist:
 if [ -a "$patchpath" ]; then
+  # Apply the patch. --index seems to be needed in order to apply submodule updates.
   git apply --index "$patchpath"
   git submodule update --init
 fi
