@@ -20,22 +20,24 @@ if [ ! -d "$patchdir" ]; then
 fi
 
 # Make patchdir an absolute path
-patchdir="$(realpath "$patchdir")"
+patchdir="`realpath "$patchdir"`"
 
 patchpath="${patchdir}/root.patch";
 # If the patch-file does exist:
 if [ -a "$patchpath" ]; then
   # Apply the patch. --index seems to be needed in order to apply submodule updates.
-  git apply --index "$patchpath"
+  echo "Applying patch for project root";
+  git apply "$patchpath"
   git submodule update --init
 fi
 
-submodulecode="
-relpath=\$(realpath --relative-to=\"$projectroot\" \"\$PWD\");
-patchpath=\"\${relpath//\\//\\.}\";
+submodulecode=":
+relpath=\`realpath --relative-to=\"$projectroot\" \"\$PWD\"\`;
+patchpath=\"\${relpath//\\//.}\";
 patchpath=\"${patchdir}/submodule-\${patchpath}.patch\";
 if [ -a \"\$patchpath\" ]; then
-  git apply --index \"\$patchpath\"
+  echo \"Applying patch for \${relpath}\"
+  git apply \"\$patchpath\";
   git submodule update --init
 fi"
 
