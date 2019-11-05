@@ -6,7 +6,7 @@ if [ $# != 1 ]; then
 fi
 
 if [ ! -d ".git" ]; then
-  echo "This script needs to be called from a git root dir."
+  echo "This script needs to be called from a git root directory."
   exit
 fi
 

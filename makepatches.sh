@@ -3,12 +3,12 @@ patchdir=$1
 projectroot=$PWD
 
 if [ $# != 1 ]; then
-  echo "usage: ./applypatches.sh PATCH_DIR"
+  echo "usage: ./makepatches.sh PATCH_DIR"
   exit
 fi
 
 if [ ! -d ".git" ]; then
-  echo "This script needs to be called from a git root dir."
+  echo "This script needs to be called from a git root directory."
   exit
 fi
 
@@ -45,4 +45,4 @@ if [ -n \"\`git status --porcelain --ignore-submodules=dirty\`\" ];then
   echo \"Created patch for \${relpath}\";
 fi"
 
-git submodule foreach --recursive --quiet bash -c "$submodulecode"
+git submodule foreach --recursive -q bash -c "$submodulecode"
