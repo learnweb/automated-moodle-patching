@@ -23,13 +23,11 @@ patchdir="`realpath "$patchdir"`"
 # Check whether there are changes in this repository.
 # dirty submodules are ignored, because otherwise, the patch would contain a note,
 # that the submdule is on commit 123abc-dirty, and the git apply would not work.
-# if [ -n "$string" ] returns true, if the string is not empty, meaning in this case, that there are changes
-# in the working directory.
-if [ -n "`git status --porcelain --ignore-submodules=dirty`" ];then
+git diff --quiet --exit-code
+# If last return code is 1 (= git diff detected changes)
+if [ "$?" -eq "1" ];then
   patchpath="${patchdir}/root.patch";
-  # Writing the diff for unstaged and staged changes to $patchpath.
   git diff --ignore-submodules=dirty > "$patchpath"
-  git diff --ignore-submodules=dirty --staged >> "$patchpath"
   echo "Created patch for project root"
 fi
 
@@ -37,7 +35,8 @@ fi
 # \$(realpath --relative-to=\"$projectroot\" \"\$PWD\") returns the path of the submodule relative to the root.
 # \${relpath//\\//.} returns relpath, but replaced every '/' with '.'
 submodulecode=":
-if [ -n \"\`git status --porcelain --ignore-submodules=dirty\`\" ];then
+git diff --quiet --exit-code
+if [ \"\$?\" -eq \"1\" ];then
   relpath=\`realpath --relative-to=\"$projectroot\" \"\$PWD\"\`;
   patchpath=\"\${relpath//\\//.}\";
   patchpath=\"${patchdir}/submodule-\${patchpath}.patch\";
