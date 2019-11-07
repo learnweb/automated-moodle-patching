@@ -37,11 +37,11 @@ fi
 submodulecode=":
 git diff --quiet --exit-code
 if [ \"\$?\" -eq \"1\" ];then
-  relpath=\`realpath --relative-to=\"$projectroot\" \"\$PWD\"\`;
-  patchpath=\"\${relpath//\\//.}\";
-  patchpath=\"${patchdir}/submodule-\${patchpath}.patch\";
-  git diff --ignore-submodules=dirty > \"\$patchpath\";
-  echo \"Created patch for \${relpath}\";
+  relpath=\"\`realpath --relative-to=\"$projectroot\" \"\$PWD\"\`\"
+  patchpath=\"\${relpath//\\//.}\"
+  patchpath=\"${patchdir}/submodule-\${patchpath}.patch\"
+  git diff --ignore-submodules=dirty > \"\$patchpath\"
+  echo \"Created patch for \${relpath}\"
 fi"
 
 git submodule foreach --recursive -q bash -c "$submodulecode"

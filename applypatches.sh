@@ -22,23 +22,23 @@ fi
 # Make patchdir an absolute path
 patchdir="`realpath "$patchdir"`"
 
-patchpath="${patchdir}/root.patch";
+scriptpath="`realpath $0`"
+scriptpath="`dirname $scriptpath`"
+scriptpath="`realpath $scriptpath`"
+
+patchpath="${patchdir}/root.patch"
 # If the patch-file does exist:
 if [ -a "$patchpath" ]; then
-  # Apply the patch. --index seems to be needed in order to apply submodule updates.
-  echo "Applying patch for project root";
+  if [ -n "`git apply --check "$patchpath" 2>&1`" ]; then
+    echo "ERROR: Could not apply patch for root and submodules:"
+    git apply --check --reject "$patchpath" 2>&1
+    echo -e "\nTry again after resolving the conflicts."
+    exit;
+  fi
+  # Apply the patch.
   git apply "$patchpath"
+  echo "Applied patch for project root"
   git submodule update --init
 fi
 
-submodulecode=":
-relpath=\`realpath --relative-to=\"$projectroot\" \"\$PWD\"\`;
-patchpath=\"\${relpath//\\//.}\";
-patchpath=\"${patchdir}/submodule-\${patchpath}.patch\";
-if [ -a \"\$patchpath\" ]; then
-  echo \"Applying patch for \${relpath}\"
-  git apply \"\$patchpath\";
-  git submodule update --init
-fi"
-
-git submodule foreach --recursive -q bash -c "$submodulecode"
+git submodule foreach -q bash -c "\"${scriptpath}/.applyrecursive.sh\" \"${patchdir}\" \"${projectroot}\""
