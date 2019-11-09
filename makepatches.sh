@@ -23,9 +23,8 @@ patchdir="`realpath "$patchdir"`"
 # Check whether there are changes in this repository.
 # dirty submodules are ignored, because otherwise, the patch would contain a note,
 # that the submdule is on commit 123abc-dirty, and the git apply would not work.
-git diff --quiet --exit-code
-# If last return code is 1 (= git diff detected changes)
-if [ "$?" -eq "1" ];then
+# The patch will be only created, if the output of `git diff --ignore-submodules=dirty` is not empty.
+if [ -n "`git diff --ignore-submodules=dirty`" ];then
   patchpath="${patchdir}/root.patch";
   git diff --ignore-submodules=dirty > "$patchpath"
   echo "Created patch for project root"
@@ -36,7 +35,7 @@ fi
 # \${relpath//\\//.} returns relpath, but replaced every '/' with '.'
 submodulecode=":
 git diff --quiet --exit-code
-if [ \"\$?\" -eq \"1\" ];then
+if [ -n \"\`git diff --ignore-submodules=dirty\`\" ];then
   relpath=\"\`realpath --relative-to=\"$projectroot\" \"\$PWD\"\`\"
   patchpath=\"\${relpath//\\//.}\"
   patchpath=\"${patchdir}/submodule-\${patchpath}.patch\"

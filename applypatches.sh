@@ -27,8 +27,8 @@ scriptpath="`dirname $scriptpath`"
 scriptpath="`realpath $scriptpath`"
 
 patchpath="${patchdir}/root.patch"
-# If the patch-file does exist:
-if [ -a "$patchpath" ]; then
+# If the patch-file does exist and the length is greater than 0:
+if [ -s "$patchpath" ]; then
   if [ -n "`git apply --check "$patchpath" 2>&1`" ]; then
     echo "ERROR: Could not apply patch for root and submodules:"
     git apply --check --reject "$patchpath" 2>&1
