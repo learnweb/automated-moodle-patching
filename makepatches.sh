@@ -12,13 +12,19 @@ if [ ! -d ".git" ]; then
   exit
 fi
 
-# If $patchdir does not exist, create $patchdir and parent folders.
-if [ ! -d "$patchdir" ]; then
-  mkdir -p "$patchdir"
-fi
-
 # Make patchdir an absolute path
 patchdir="`realpath "$patchdir"`"
+
+# If $patchdir does not exist, create $patchdir and parent folders.
+# If it does exist and is not empty, exit script.
+if [ -d "$patchdir" ]; then
+  if [ -n "`ls -A \"$patchdir\"`" ]; then
+    echo "The patch directory has to be empty!"
+    exit
+  fi
+else
+  mkdir -p "$patchdir"
+fi
 
 # Check whether there are changes in this repository.
 # dirty submodules are ignored, because otherwise, the patch would contain a note,
