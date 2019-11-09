@@ -20,7 +20,7 @@ if [ -a "$patchpath" ]; then
       echo "ERROR: Could not apply patch for ${relpath} and submodules:"
       git apply --check --reject "$patchpath" 2>&1
       echo -e "\nTry running"
-      echo "\"${scriptpath}/.applyrecursive.sh\" \"${patchdir}\" \"${projectroot}\""
+      echo "    \"${scriptpath}/.applyrecursive.sh\" \"${patchdir}\" \"${projectroot}\""
       echo "in the `realpath $PWD` directory after resolving the conflicts."
       exit;
   fi
@@ -29,4 +29,4 @@ if [ -a "$patchpath" ]; then
   git submodule update --init
 fi
 
-git submodule foreach -q bash -c "\"${scriptpath}/.applyrecursive.sh\" \"${patchdir}\" \"${projectroot}\""
+git submodule foreach -q bash -c ":;\"${scriptpath}/.applyrecursive.sh\" \"${patchdir}\" \"${projectroot}\""

@@ -41,4 +41,4 @@ if [ -a "$patchpath" ]; then
   git submodule update --init
 fi
 
-git submodule foreach -q bash -c "\"${scriptpath}/.applyrecursive.sh\" \"${patchdir}\" \"${projectroot}\""
+git submodule foreach -q bash -c ":;\"${scriptpath}/.applyrecursive.sh\" \"${patchdir}\" \"${projectroot}\""
