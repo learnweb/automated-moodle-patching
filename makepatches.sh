@@ -33,6 +33,7 @@ fi
 if [ -n "`git diff --ignore-submodules=dirty`" ];then
   patchpath="${patchdir}/root.patch";
   git diff --ignore-submodules=dirty > "$patchpath"
+  git ls-files -o --exclude-standard -z | xargs -i -0 git diff --no-index -- /dev/null "{}" >> "$patchpath"
   echo "Created patch for project root"
 fi
 
@@ -46,6 +47,7 @@ if [ -n \"\`git diff --ignore-submodules=dirty\`\" ];then
   patchpath=\"\${relpath//\\//.}\"
   patchpath=\"${patchdir}/submodule-\${patchpath}.patch\"
   git diff --ignore-submodules=dirty > \"\$patchpath\"
+  git ls-files -o --exclude-standard -z | xargs -i -0 git diff --no-index -- /dev/null \"{}\" >> \"$patchpath\"
   echo \"Created patch for \${relpath}\"
 fi"
 
