@@ -48,7 +48,7 @@ if [ -n \"\`git diff --ignore-submodules=dirty\`\" ] || [ -n \"\`git ls-files -o
   patchpath=\"\${relpath//\\//.}\"
   patchpath=\"${patchdir}/submodule-\${patchpath}.patch\"
   git diff --ignore-submodules=dirty > \"\$patchpath\"
-  git ls-files -o --exclude-standard -z | xargs -i -0 git diff --no-index -- /dev/null \"{}\" >> \"$patchpath\"
+  git ls-files -o --exclude-standard -z | xargs -i -0 git diff --no-index -- /dev/null \"{}\" >> \"\$patchpath\"
   echo \"Created patch for \${relpath}\"
 fi"
 
